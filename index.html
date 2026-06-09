@@ -256,15 +256,16 @@
             border: 1px solid #FFB6D9;
         }
 
-        /* Buttons */
+        /* Buttons Container - Fix for proper layout */
         .button-group {
             display: flex;
-            gap: 45px;
+            gap: 30px;
             justify-content: center;
             align-items: center;
             position: relative;
-            min-height: 100px;
+            min-height: 80px;
             margin-top: 25px;
+            flex-wrap: wrap;
         }
 
         .btn {
@@ -283,6 +284,7 @@
                 inset 0 2px 0 rgba(255,255,255,0.4),
                 0 5px 0 rgba(0,0,0,0.15),
                 0 10px 20px rgba(0,0,0,0.1);
+            z-index: 5;
         }
 
         .btn:active {
@@ -295,12 +297,11 @@
         .btn-yes {
             background: linear-gradient(145deg, #FFB6D9, #FFC0E0);
             color: #FF1493;
-            z-index: 5;
             border-color: #FF99CC;
         }
 
         .btn-yes:hover {
-            transform: scale(1.08) translateY(-2px);
+            transform: scale(1.08);
             box-shadow: 
                 inset 0 2px 0 rgba(255,255,255,0.4),
                 0 8px 0 rgba(0,0,0,0.15),
@@ -311,13 +312,13 @@
         .btn-no {
             background: linear-gradient(145deg, #FFE0F0, #FFD1E8);
             color: #FF99CC;
-            position: absolute;
-            z-index: 100;
-            transition: transform 0.15s ease-out;
             border-color: #FFB6D9;
+            position: static;
+            transition: all 0.3s ease;
         }
 
         .btn-no:hover {
+            transform: scale(1.08);
             box-shadow: 
                 inset 0 2px 0 rgba(255,255,255,0.4),
                 0 8px 0 rgba(0,0,0,0.15),
@@ -481,12 +482,14 @@
             }
             
             .button-group {
-                gap: 25px;
+                gap: 15px;
+                flex-direction: column;
             }
             
             .btn { 
                 padding: 14px 35px;
                 font-size: 1rem;
+                width: 100%;
             }
 
             .minifig {
@@ -581,78 +584,24 @@
             heartBg.appendChild(heart);
         }
 
-        // The "No" button runs away
+        // The "No" button behavior - now just changes text, no position escape
         const btnNo = document.getElementById('btnNo');
         const btnYes = document.getElementById('btnYes');
         const buttonGroup = document.getElementById('buttonGroup');
 
-        function moveButtonAway(e) {
-            const btnRect = btnNo.getBoundingClientRect();
-            const btnCenterX = btnRect.left + btnRect.width / 2;
-            const btnCenterY = btnRect.top + btnRect.height / 2;
-            
-            const mouseX = e.clientX;
-            const mouseY = e.clientY;
-            
-            const distance = Math.sqrt(
-                Math.pow(mouseX - btnCenterX, 2) + 
-                Math.pow(mouseY - btnCenterY, 2)
-            );
-            
-            const triggerDistance = 200;
-            
-            if (distance < triggerDistance) {
-                const viewportWidth = window.innerWidth;
-                const viewportHeight = window.innerHeight;
-                
-                const btnWidth = btnRect.width;
-                const btnHeight = btnRect.height;
-                
-                let angle = Math.atan2(btnCenterY - mouseY, btnCenterX - mouseX);
-                angle += (Math.random() - 0.5) * 1;
-                
-                const moveDistance = 150 + Math.random() * 100;
-                
-                let newX = btnCenterX + Math.cos(angle) * moveDistance - btnWidth / 2;
-                let newY = btnCenterY + Math.sin(angle) * moveDistance - btnHeight / 2;
-                
-                newX = Math.max(10, Math.min(viewportWidth - btnWidth - 10, newX));
-                newY = Math.max(10, Math.min(viewportHeight - btnHeight - 10, newY));
-                
-                btnNo.style.position = 'fixed';
-                btnNo.style.left = newX + 'px';
-                btnNo.style.top = newY + 'px';
-                
-                const noTexts = ['NO 💔', 'REALLY? 😢', 'THINK! 🤔', 'SURE? 😰', 'NOOOO! 😭', 'PLEASE? 🥺'];
-                if (Math.random() > 0.7) {
-                    btnNo.textContent = noTexts[Math.floor(Math.random() * noTexts.length)];
-                }
-                
-                const currentScale = parseFloat(btnYes.dataset.scale || 1);
-                if (currentScale < 2.5) {
-                    btnYes.dataset.scale = currentScale + 0.1;
-                    btnYes.style.transform = `scale(${currentScale + 0.1})`;
-                    btnYes.style.padding = (16 + currentScale * 8) + 'px ' + (48 + currentScale * 12) + 'px';
-                }
-            }
-        }
-
         btnNo.addEventListener('click', function(e) {
             e.preventDefault();
-            const viewportWidth = window.innerWidth;
-            const viewportHeight = window.innerHeight;
-            const btnRect = btnNo.getBoundingClientRect();
+            const noTexts = ['NO 💔', 'REALLY? 😢', 'THINK! 🤔', 'SURE? 😰', 'NOOOO! 😭', 'PLEASE? 🥺'];
+            btnNo.textContent = noTexts[Math.floor(Math.random() * noTexts.length)];
             
-            let newX = Math.random() * (viewportWidth - btnRect.width - 20) + 10;
-            let newY = Math.random() * (viewportHeight - btnRect.height - 20) + 10;
-            
-            btnNo.style.position = 'fixed';
-            btnNo.style.left = newX + 'px';
-            btnNo.style.top = newY + 'px';
+            // Make Yes button bigger
+            const currentScale = parseFloat(btnYes.dataset.scale || 1);
+            if (currentScale < 2.5) {
+                btnYes.dataset.scale = currentScale + 0.15;
+                btnYes.style.transform = `scale(${currentScale + 0.15})`;
+                btnYes.style.padding = (16 + currentScale * 10) + 'px ' + (48 + currentScale * 15) + 'px';
+            }
         });
-
-        btnNo.addEventListener('mouseover', moveButtonAway);
-        document.addEventListener('mousemove', moveButtonAway);
 
         // Success handler
         function sayYes() {
