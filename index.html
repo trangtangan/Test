@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Date With Me?</title>
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>Lego Date Request</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -13,8 +13,8 @@
         }
 
         body {
-            font-family: 'Quicksand', sans-serif;
-            background: #fff0f3;
+            font-family: 'Fredoka', sans-serif;
+            background: linear-gradient(135deg, #FFD500 0%, #FF6B35 50%, #004E89 100%);
             min-height: 100vh;
             overflow: hidden;
             display: flex;
@@ -24,8 +24,8 @@
             position: relative;
         }
 
-        /* Floating hearts background */
-        .heart-bg {
+        /* Lego brick background pattern */
+        .lego-bg {
             position: fixed;
             top: 0;
             left: 0;
@@ -33,29 +33,62 @@
             height: 100%;
             pointer-events: none;
             z-index: 0;
+            opacity: 0.1;
+            background-image: 
+                radial-gradient(circle at 20px 20px, #1a1a1a 2px, transparent 2px);
+            background-size: 40px 40px;
         }
 
-        .floating-heart {
+        /* Floating Lego bricks */
+        .floating-brick {
             position: absolute;
-            color: #ff8fa3;
-            font-size: 20px;
-            animation: floatUp 8s linear infinite;
-            opacity: 0.6;
+            animation: floatRotate 8s ease-in-out infinite;
+            opacity: 0.7;
         }
 
-        @keyframes floatUp {
+        .brick-2x1 {
+            width: 80px;
+            height: 40px;
+            border-radius: 8px;
+            box-shadow: 
+                inset 0 2px 0 rgba(255,255,255,0.3),
+                0 4px 0 rgba(0,0,0,0.2),
+                0 8px 12px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .brick-2x1::before,
+        .brick-2x1::after {
+            content: '';
+            position: absolute;
+            top: -4px;
+            width: 16px;
+            height: 6px;
+            background: inherit;
+            border-radius: 2px;
+        }
+
+        .brick-2x1::before {
+            left: 12px;
+        }
+
+        .brick-2x1::after {
+            right: 12px;
+        }
+
+        @keyframes floatRotate {
             0% {
-                transform: translateY(100vh) scale(0) rotate(0deg);
+                transform: translateY(100vh) rotate(0deg) scale(0.5);
                 opacity: 0;
             }
             10% {
-                opacity: 0.6;
+                opacity: 0.7;
             }
             90% {
-                opacity: 0.4;
+                opacity: 0.5;
             }
             100% {
-                transform: translateY(-10vh) scale(1.2) rotate(360deg);
+                transform: translateY(-10vh) rotate(360deg) scale(1);
                 opacity: 0;
             }
         }
@@ -66,90 +99,255 @@
             z-index: 10;
             text-align: center;
             padding: 2rem;
-            max-width: 600px;
+            max-width: 700px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 
+                0 0 0 8px #FFD500,
+                0 0 0 12px #FF6B35,
+                0 20px 40px rgba(0,0,0,0.3);
+            border: 4px solid #004E89;
         }
 
-        /* Big heart animation */
-        .big-heart {
-            font-size: 80px;
-            animation: heartbeat 1.5s ease-in-out infinite;
+        /* Lego brick title */
+        .lego-title {
+            display: inline-flex;
+            gap: 8px;
             margin-bottom: 20px;
-            display: inline-block;
+            justify-content: center;
+            flex-wrap: wrap;
         }
 
-        @keyframes heartbeat {
-            0%, 100% { transform: scale(1); }
-            25% { transform: scale(1.1); }
-            50% { transform: scale(1); }
-            75% { transform: scale(1.15); }
+        .brick-letter {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: white;
+            box-shadow: 
+                inset 0 2px 0 rgba(255,255,255,0.3),
+                0 4px 0 rgba(0,0,0,0.2),
+                0 8px 12px rgba(0,0,0,0.1);
+            position: relative;
+            transform: rotate(-3deg);
+        }
+
+        .brick-letter:nth-child(even) {
+            transform: rotate(3deg);
+        }
+
+        .brick-letter:nth-child(1) { background: #FF6B35; }
+        .brick-letter:nth-child(2) { background: #FFD500; }
+        .brick-letter:nth-child(3) { background: #004E89; }
+        .brick-letter:nth-child(4) { background: #00A8E8; }
+        .brick-letter:nth-child(5) { background: #00D4FF; }
+        .brick-letter:nth-child(6) { background: #FF6B35; }
+        .brick-letter:nth-child(7) { background: #FFD500; }
+        .brick-letter:nth-child(8) { background: #004E89; }
+
+        .brick-letter::before,
+        .brick-letter::after {
+            content: '';
+            position: absolute;
+            top: -4px;
+            width: 12px;
+            height: 5px;
+            background: inherit;
+            border-radius: 2px;
+        }
+
+        .brick-letter::before {
+            left: 8px;
+        }
+
+        .brick-letter::after {
+            right: 8px;
         }
 
         h1 {
-            font-family: 'Pacifico', cursive;
-            color: #d6336c;
             font-size: 2.5rem;
+            color: #004E89;
             margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(214, 51, 108, 0.2);
+            text-shadow: 2px 2px 0 rgba(255, 107, 53, 0.2);
         }
 
         .subtitle {
-            color: #f06595;
-            font-size: 1.2rem;
-            margin-bottom: 40px;
-            font-weight: 600;
+            color: #FF6B35;
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Lego minifigure */
+        .minifig {
+            width: 80px;
+            height: 120px;
+            margin: 0 auto 20px;
+            position: relative;
+        }
+
+        .minifig-head {
+            width: 60px;
+            height: 60px;
+            background: #FFD500;
+            border-radius: 4px;
+            margin: 0 auto 4px;
+            box-shadow: 
+                inset 0 2px 0 rgba(255,255,255,0.4),
+                0 3px 0 rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        .minifig-eyes {
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+        }
+
+        .eye {
+            width: 6px;
+            height: 8px;
+            background: #000;
+            border-radius: 2px;
+        }
+
+        .minifig-smile {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 3px;
+            background: #000;
+            border-radius: 2px;
+        }
+
+        .minifig-body {
+            width: 60px;
+            height: 40px;
+            background: #FF6B35;
+            margin: 0 auto 4px;
+            border-radius: 2px;
+            box-shadow: 
+                inset 0 2px 0 rgba(255,255,255,0.3),
+                0 2px 0 rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        .minifig-legs {
+            width: 60px;
+            margin: 0 auto;
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .leg {
+            width: 16px;
+            height: 30px;
+            background: #004E89;
+            border-radius: 2px;
+            box-shadow: 0 2px 0 rgba(0,0,0,0.2);
+        }
+
+        .heart-badge {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 28px;
+            height: 28px;
+            background: #FF1744;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
 
         /* Buttons */
         .button-group {
             display: flex;
-            gap: 30px;
+            gap: 40px;
             justify-content: center;
             align-items: center;
             position: relative;
-            min-height: 80px;
+            min-height: 100px;
+            margin-top: 20px;
         }
 
         .btn {
-            padding: 15px 40px;
-            font-size: 1.2rem;
-            font-family: 'Quicksand', sans-serif;
+            padding: 18px 45px;
+            font-size: 1.3rem;
+            font-family: 'Fredoka', sans-serif;
             font-weight: 700;
-            border: none;
-            border-radius: 50px;
+            border: 4px solid #000;
+            border-radius: 12px;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             position: relative;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 
+                inset 0 2px 0 rgba(255,255,255,0.3),
+                0 6px 0 rgba(0,0,0,0.3),
+                0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .btn:active {
+            box-shadow: 
+                inset 0 2px 0 rgba(255,255,255,0.3),
+                0 2px 0 rgba(0,0,0,0.3);
+            transform: translateY(4px);
         }
 
         .btn-yes {
-            background: #d6336c;
+            background: linear-gradient(145deg, #00D4FF, #00A8E8);
             color: white;
             z-index: 5;
         }
 
         .btn-yes:hover {
-            background: #c2255c;
-            transform: scale(1.05);
-            box-shadow: 0 6px 20px rgba(214, 51, 108, 0.3);
+            transform: scale(1.08) translateY(-2px);
+            box-shadow: 
+                inset 0 2px 0 rgba(255,255,255,0.3),
+                0 8px 0 rgba(0,0,0,0.3),
+                0 12px 24px rgba(0, 164, 232, 0.4);
         }
 
         .btn-no {
-            background: #868e96;
-            color: white;
+            background: linear-gradient(145deg, #FFD500, #FF9800);
+            color: #000;
             position: absolute;
             z-index: 100;
             transition: transform 0.15s ease-out;
         }
 
-        /* Success message */
+        .btn-no:hover {
+            box-shadow: 
+                inset 0 2px 0 rgba(255,255,255,0.3),
+                0 8px 0 rgba(0,0,0,0.3),
+                0 12px 24px rgba(255, 152, 0, 0.4);
+        }
+
+        /* Success overlay */
         .success-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(255, 240, 243, 0.95);
+            background: linear-gradient(135deg, #FFD500 0%, #FF6B35 50%, #004E89 100%);
             z-index: 1000;
             display: none;
             flex-direction: column;
@@ -167,93 +365,230 @@
             to { opacity: 1; }
         }
 
-        .success-heart {
-            font-size: 100px;
-            animation: heartbeat 1s ease-in-out infinite;
+        .success-content {
+            text-align: center;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 
+                0 0 0 8px #FFD500,
+                0 0 0 12px #FF6B35,
+                0 20px 60px rgba(0,0,0,0.4);
+            border: 4px solid #004E89;
+        }
+
+        .success-brick-tower {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
             margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tower-brick {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            font-size: 2rem;
+            box-shadow: 
+                inset 0 2px 0 rgba(255,255,255,0.3),
+                0 4px 0 rgba(0,0,0,0.2),
+                0 8px 12px rgba(0,0,0,0.1);
+            animation: brickPop 0.6s ease-out;
+        }
+
+        @keyframes brickPop {
+            0% {
+                transform: scale(0) rotate(-30deg);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        .tower-brick:nth-child(1) { 
+            background: #FF6B35;
+            animation-delay: 0s;
+        }
+        .tower-brick:nth-child(2) { 
+            background: #FFD500;
+            animation-delay: 0.1s;
+        }
+        .tower-brick:nth-child(3) { 
+            background: #004E89;
+            animation-delay: 0.2s;
+        }
+        .tower-brick:nth-child(4) { 
+            background: #00D4FF;
+            animation-delay: 0.3s;
         }
 
         .success-text {
-            font-family: 'Pacifico', cursive;
-            font-size: 3rem;
-            color: #d6336c;
-            margin-bottom: 20px;
+            font-size: 2.8rem;
+            color: #004E89;
+            margin-bottom: 15px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
         .success-sub {
-            font-size: 1.3rem;
-            color: #f06595;
-            font-weight: 600;
+            font-size: 1.2rem;
+            color: #FF6B35;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
-        /* Confetti */
+        /* Confetti particles */
         .confetti {
             position: fixed;
-            width: 10px;
-            height: 10px;
-            top: -10px;
+            width: 15px;
+            height: 15px;
+            top: -15px;
             z-index: 1001;
             animation: confettiFall 3s linear forwards;
+            border-radius: 2px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
 
         @keyframes confettiFall {
-            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+            0% { 
+                transform: translateY(0) rotate(0deg) translateX(0);
+                opacity: 1; 
+            }
+            100% { 
+                transform: translateY(100vh) rotate(720deg) translateX(100px);
+                opacity: 0; 
+            }
         }
 
         /* Responsive */
         @media (max-width: 480px) {
-            h1 { font-size: 2rem; }
-            .big-heart { font-size: 60px; }
-            .btn { padding: 12px 30px; font-size: 1rem; }
+            .container {
+                padding: 1.5rem;
+            }
+            
+            h1 { font-size: 1.8rem; }
+            
+            .brick-letter {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+            }
+            
+            .button-group {
+                gap: 20px;
+            }
+            
+            .btn { 
+                padding: 14px 35px;
+                font-size: 1rem;
+            }
+
+            .lego-title {
+                gap: 4px;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- Floating Hearts Background -->
-    <div class="heart-bg" id="heartBg"></div>
+    <!-- Lego background pattern -->
+    <div class="lego-bg"></div>
+
+    <!-- Floating Lego Bricks -->
+    <div id="brickContainer"></div>
 
     <!-- Main Content -->
     <div class="container">
-        <div class="big-heart">💖</div>
-        <h1>Do you want to have a date with me?</h1>
-        <p class="subtitle">Hãy trả lời từ trái tim nhé... 💕</p>
+        <!-- Lego Minifigure -->
+        <div class="minifig">
+            <div class="minifig-head">
+                <div class="minifig-eyes">
+                    <div class="eye"></div>
+                    <div class="eye"></div>
+                </div>
+                <div class="minifig-smile"></div>
+            </div>
+            <div class="minifig-body">
+                <div class="heart-badge">❤️</div>
+            </div>
+            <div class="minifig-legs">
+                <div class="leg"></div>
+                <div class="leg"></div>
+            </div>
+        </div>
+
+        <!-- Lego Brick Title -->
+        <div class="lego-title">
+            <div class="brick-letter">B</div>
+            <div class="brick-letter">U</div>
+            <div class="brick-letter">I</div>
+            <div class="brick-letter">L</div>
+            <div class="brick-letter">D</div>
+            <div class="brick-letter">L</div>
+            <div class="brick-letter">O</div>
+            <div class="brick-letter">V</div>
+            <div class="brick-letter">E</div>
+        </div>
+
+        <h1>Date With Me?</h1>
+        <p class="subtitle">Hãy xây dựng tình yêu cùng tôi... 💕</p>
 
         <div class="button-group" id="buttonGroup">
-            <button class="btn btn-yes" id="btnYes" onclick="sayYes()">Yes 💘</button>
-            <button class="btn btn-no" id="btnNo">No 💔</button>
+            <button class="btn btn-yes" id="btnYes" onclick="sayYes()">YES 💙</button>
+            <button class="btn btn-no" id="btnNo">NO 🧡</button>
         </div>
     </div>
 
     <!-- Success Overlay -->
     <div class="success-overlay" id="successOverlay">
-        <div class="success-heart">💞</div>
-        <div class="success-text">Yay! I knew it! 💖</div>
-        <div class="success-sub">Cuộc hẹn đầu tiên của chúng ta sẽ thật tuyệt vời!</div>
+        <div class="success-content">
+            <div class="success-brick-tower">
+                <div class="tower-brick">❤️</div>
+                <div class="tower-brick">💙</div>
+                <div class="tower-brick">💛</div>
+                <div class="tower-brick">💚</div>
+            </div>
+            <div class="success-text">YES! 🎉</div>
+            <div class="success-sub">Chúng ta sẽ xây dựng những kỷ niệm tuyệt vời! 🏗️</div>
+        </div>
     </div>
 
     <script>
-        // Generate floating hearts
-        const heartBg = document.getElementById('heartBg');
-        const heartEmojis = ['💕', '💖', '💗', '💓', '💝', '❤️', '🧡', '💛'];
+        // Generate floating Lego bricks
+        const brickContainer = document.getElementById('brickContainer');
+        const brickColors = [
+            '#FF6B35', '#FFD500', '#004E89', '#00A8E8', 
+            '#00D4FF', '#FF1744', '#FF9800', '#FFC400'
+        ];
         
-        for (let i = 0; i < 30; i++) {
-            const heart = document.createElement('div');
-            heart.className = 'floating-heart';
-            heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
-            heart.style.left = Math.random() * 100 + '%';
-            heart.style.fontSize = (15 + Math.random() * 25) + 'px';
-            heart.style.animationDuration = (6 + Math.random() * 6) + 's';
-            heart.style.animationDelay = Math.random() * 8 + 's';
-            heartBg.appendChild(heart);
+        for (let i = 0; i < 20; i++) {
+            const brick = document.createElement('div');
+            brick.className = 'floating-brick';
+            
+            const brickDiv = document.createElement('div');
+            brickDiv.className = 'brick-2x1';
+            brickDiv.style.backgroundColor = brickColors[Math.floor(Math.random() * brickColors.length)];
+            
+            brick.appendChild(brickDiv);
+            brick.style.left = Math.random() * 100 + '%';
+            brick.style.animationDuration = (6 + Math.random() * 6) + 's';
+            brick.style.animationDelay = Math.random() * 8 + 's';
+            
+            brickContainer.appendChild(brick);
         }
 
         // The "No" button runs away
         const btnNo = document.getElementById('btnNo');
         const btnYes = document.getElementById('btnYes');
         const buttonGroup = document.getElementById('buttonGroup');
-        let isEscaping = false;
 
         function moveButtonAway(e) {
             const btnRect = btnNo.getBoundingClientRect();
@@ -277,10 +612,7 @@
                 const btnWidth = btnRect.width;
                 const btnHeight = btnRect.height;
                 
-                // Calculate direction away from mouse
                 let angle = Math.atan2(btnCenterY - mouseY, btnCenterX - mouseX);
-                
-                // Add some randomness to make it unpredictable
                 angle += (Math.random() - 0.5) * 1;
                 
                 const moveDistance = 150 + Math.random() * 100;
@@ -288,7 +620,6 @@
                 let newX = btnCenterX + Math.cos(angle) * moveDistance - btnWidth / 2;
                 let newY = btnCenterY + Math.sin(angle) * moveDistance - btnHeight / 2;
                 
-                // Keep within viewport
                 newX = Math.max(10, Math.min(viewportWidth - btnWidth - 10, newX));
                 newY = Math.max(10, Math.min(viewportHeight - btnHeight - 10, newY));
                 
@@ -296,23 +627,20 @@
                 btnNo.style.left = newX + 'px';
                 btnNo.style.top = newY + 'px';
                 
-                // Change text sometimes
-                const noTexts = ['No 💔', 'Really? 😢', 'Think again! 🤔', 'Are you sure? 😰', 'Nooo! 😭', 'Please? 🥺', 'Don\'t do it! 😱'];
+                const noTexts = ['NO 🧡', 'REALLY? 😢', 'THINK! 🤔', 'SURE? 😰', 'NOOOO! 😭', 'PLEASE? 🥺', 'DON\'T! 😱'];
                 if (Math.random() > 0.7) {
                     btnNo.textContent = noTexts[Math.floor(Math.random() * noTexts.length)];
                 }
                 
-                // Make Yes button bigger
                 const currentScale = parseFloat(btnYes.dataset.scale || 1);
                 if (currentScale < 2.5) {
                     btnYes.dataset.scale = currentScale + 0.1;
                     btnYes.style.transform = `scale(${currentScale + 0.1})`;
-                    btnYes.style.padding = (15 + currentScale * 5) + 'px ' + (40 + currentScale * 10) + 'px';
+                    btnYes.style.padding = (18 + currentScale * 8) + 'px ' + (45 + currentScale * 12) + 'px';
                 }
             }
         }
 
-        // Also move on click attempt
         btnNo.addEventListener('click', function(e) {
             e.preventDefault();
             const viewportWidth = window.innerWidth;
@@ -335,22 +663,20 @@
             const overlay = document.getElementById('successOverlay');
             overlay.classList.add('active');
             
-            // Create confetti
-            const colors = ['#d6336c', '#ff8fa3', '#ff6b6b', '#f06595', '#fcc2d7', '#fff0f6'];
-            for (let i = 0; i < 100; i++) {
+            const colors = ['#FF6B35', '#FFD500', '#004E89', '#00A8E8', '#00D4FF', '#FF1744'];
+            for (let i = 0; i < 120; i++) {
                 setTimeout(() => {
                     const confetti = document.createElement('div');
                     confetti.className = 'confetti';
                     confetti.style.left = Math.random() * 100 + 'vw';
                     confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                    confetti.style.width = (5 + Math.random() * 10) + 'px';
-                    confetti.style.height = (5 + Math.random() * 10) + 'px';
-                    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                    confetti.style.width = (12 + Math.random() * 15) + 'px';
+                    confetti.style.height = (12 + Math.random() * 15) + 'px';
                     confetti.style.animationDuration = (2 + Math.random() * 2) + 's';
                     document.body.appendChild(confetti);
                     
                     setTimeout(() => confetti.remove(), 4000);
-                }, i * 30);
+                }, i * 20);
             }
         }
     </script>
