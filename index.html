@@ -66,6 +66,8 @@
             top: 20px;
             right: 20px;
             z-index: 500;
+            display: flex;
+            gap: 5px;
         }
 
         .lang-btn {
@@ -79,6 +81,12 @@
             font-weight: 600;
             transition: all 0.3s ease;
             box-shadow: 0 4px 15px rgba(214, 51, 108, 0.3);
+        }
+
+        .lang-btn.active {
+            background: #c2255c;
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(214, 51, 108, 0.4);
         }
 
         .lang-btn:hover {
@@ -234,6 +242,7 @@
             .big-heart { font-size: 60px; }
             .btn { padding: 12px 30px; font-size: 1rem; }
             .lang-btn { padding: 8px 12px; font-size: 0.8rem; }
+            .language-toggle { gap: 3px; }
         }
     </style>
 </head>
@@ -241,7 +250,9 @@
 
     <!-- Language Toggle -->
     <div class="language-toggle">
-        <button class="lang-btn" id="langBtn" onclick="toggleLanguage()">中文 | English</button>
+        <button class="lang-btn active" onclick="setLanguage('en')">English</button>
+        <button class="lang-btn" onclick="setLanguage('zh')">中文</button>
+        <button class="lang-btn" onclick="setLanguage('vi')">Tiếng Việt</button>
     </div>
 
     <!-- Floating Hearts Background -->
@@ -276,8 +287,16 @@
                 btnNo: "No 💔",
                 successText: "Yay! I knew it! 💖",
                 successSub: "Our first date will be amazing!",
-                noTexts: ['No 💔', 'Really? 😢', 'Think again! 🤔', 'Are you sure? 😰', 'Nooo! 😭', 'Please? 🥺', "Don't do it! 😱"],
-                langBtn: "中文 | English"
+                noTexts: ['No 💔', 'Really? 😢', 'Think again! 🤔', 'Are you sure? 😰', 'Nooo! 😭', 'Please? 🥺', "Don't do it! 😱"]
+            },
+            zh: {
+                title: "你想和我约会吗?",
+                subtitle: "用你的心来回答... 💕",
+                btnYes: "好的 💘",
+                btnNo: "不要 💔",
+                successText: "太好了！我就知道! 💖",
+                successSub: "我们的第一次约会会很棒！",
+                noTexts: ['不要 💔', '真的吗？😢', '再想想！🤔', '你确定吗？😰', '不！😭', '请吧？🥺', '别这样！😱']
             },
             vi: {
                 title: "Bạn muốn hẹn hò với tôi không?",
@@ -286,8 +305,7 @@
                 btnNo: "Từ chối 💔",
                 successText: "Tuyệt vời! Tôi đã biết rồi! 💖",
                 successSub: "Buổi hẹn đầu tiên sẽ tuyệt diệu!",
-                noTexts: ['Từ chối 💔', 'Thật sao? 😢', 'Hãy suy nghĩ lại! 🤔', 'Bạn chắc chắn? 😰', 'Không! 😭', 'Vui lòng? 🥺', 'Đừng làm! 😱'],
-                langBtn: "English | 中文"
+                noTexts: ['Từ chối 💔', 'Thật sao? 😢', 'Hãy suy nghĩ lại! 🤔', 'Bạn chắc chắn? 😰', 'Không! 😭', 'Vui lòng? 🥺', 'Đừng làm! 😱']
             }
         };
 
@@ -296,13 +314,25 @@
         // Initialize language
         function initLanguage() {
             updateLanguage(currentLang);
+            updateActiveButton();
         }
 
-        // Toggle language
-        function toggleLanguage() {
-            currentLang = currentLang === 'en' ? 'vi' : 'en';
+        // Set language
+        function setLanguage(lang) {
+            currentLang = lang;
             localStorage.setItem('language', currentLang);
             updateLanguage(currentLang);
+            updateActiveButton();
+        }
+
+        // Update active button
+        function updateActiveButton() {
+            const buttons = document.querySelectorAll('.lang-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            
+            if (currentLang === 'en') buttons[0].classList.add('active');
+            else if (currentLang === 'zh') buttons[1].classList.add('active');
+            else if (currentLang === 'vi') buttons[2].classList.add('active');
         }
 
         // Update UI with selected language
@@ -314,7 +344,6 @@
             document.getElementById('btnNoText').textContent = t.btnNo;
             document.getElementById('successText').textContent = t.successText;
             document.getElementById('successSub').textContent = t.successSub;
-            document.getElementById('langBtn').textContent = t.langBtn;
         }
 
         // Generate floating hearts
