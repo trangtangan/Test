@@ -60,6 +60,33 @@
             }
         }
 
+        /* Language Toggle */
+        .language-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 500;
+        }
+
+        .lang-btn {
+            background: #d6336c;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(214, 51, 108, 0.3);
+        }
+
+        .lang-btn:hover {
+            background: #c2255c;
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(214, 51, 108, 0.4);
+        }
+
         /* Main container */
         .container {
             position: relative;
@@ -206,10 +233,16 @@
             h1 { font-size: 2rem; }
             .big-heart { font-size: 60px; }
             .btn { padding: 12px 30px; font-size: 1rem; }
+            .lang-btn { padding: 8px 12px; font-size: 0.8rem; }
         }
     </style>
 </head>
 <body>
+
+    <!-- Language Toggle -->
+    <div class="language-toggle">
+        <button class="lang-btn" id="langBtn" onclick="toggleLanguage()">中文 | English</button>
+    </div>
 
     <!-- Floating Hearts Background -->
     <div class="heart-bg" id="heartBg"></div>
@@ -217,23 +250,73 @@
     <!-- Main Content -->
     <div class="container">
         <div class="big-heart">💖</div>
-        <h1>Do you want to have a date with me?</h1>
-        <p class="subtitle">Answer from your heart... 💕</p>
+        <h1 id="title">Do you want to have a date with me?</h1>
+        <p class="subtitle" id="subtitle">Answer from your heart... 💕</p>
 
         <div class="button-group" id="buttonGroup">
-            <button class="btn btn-yes" id="btnYes" onclick="sayYes()">Yes 💘</button>
-            <button class="btn btn-no" id="btnNo">No 💔</button>
+            <button class="btn btn-yes" id="btnYes" onclick="sayYes()"><span id="btnYesText">Yes 💘</span></button>
+            <button class="btn btn-no" id="btnNo"><span id="btnNoText">No 💔</span></button>
         </div>
     </div>
 
     <!-- Success Overlay -->
     <div class="success-overlay" id="successOverlay">
         <div class="success-heart">💞</div>
-        <div class="success-text">Yay! I knew it! 💖</div>
-        <div class="success-sub">Our first date will be amazing!</div>
+        <div class="success-text" id="successText">Yay! I knew it! 💖</div>
+        <div class="success-sub" id="successSub">Our first date will be amazing!</div>
     </div>
 
     <script>
+        // Language translations
+        const translations = {
+            en: {
+                title: "Do you want to have a date with me?",
+                subtitle: "Answer from your heart... 💕",
+                btnYes: "Yes 💘",
+                btnNo: "No 💔",
+                successText: "Yay! I knew it! 💖",
+                successSub: "Our first date will be amazing!",
+                noTexts: ['No 💔', 'Really? 😢', 'Think again! 🤔', 'Are you sure? 😰', 'Nooo! 😭', 'Please? 🥺', "Don't do it! 😱"],
+                langBtn: "中文 | English"
+            },
+            vi: {
+                title: "Bạn muốn hẹn hò với tôi không?",
+                subtitle: "Trả lời từ trái tim bạn... 💕",
+                btnYes: "Đồng ý 💘",
+                btnNo: "Từ chối 💔",
+                successText: "Tuyệt vời! Tôi đã biết rồi! 💖",
+                successSub: "Buổi hẹn đầu tiên sẽ tuyệt diệu!",
+                noTexts: ['Từ chối 💔', 'Thật sao? 😢', 'Hãy suy nghĩ lại! 🤔', 'Bạn chắc chắn? 😰', 'Không! 😭', 'Vui lòng? 🥺', 'Đừng làm! 😱'],
+                langBtn: "English | 中文"
+            }
+        };
+
+        let currentLang = localStorage.getItem('language') || 'en';
+
+        // Initialize language
+        function initLanguage() {
+            updateLanguage(currentLang);
+        }
+
+        // Toggle language
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'vi' : 'en';
+            localStorage.setItem('language', currentLang);
+            updateLanguage(currentLang);
+        }
+
+        // Update UI with selected language
+        function updateLanguage(lang) {
+            const t = translations[lang];
+            document.getElementById('title').textContent = t.title;
+            document.getElementById('subtitle').textContent = t.subtitle;
+            document.getElementById('btnYesText').textContent = t.btnYes;
+            document.getElementById('btnNoText').textContent = t.btnNo;
+            document.getElementById('successText').textContent = t.successText;
+            document.getElementById('successSub').textContent = t.successSub;
+            document.getElementById('langBtn').textContent = t.langBtn;
+        }
+
         // Generate floating hearts
         const heartBg = document.getElementById('heartBg');
         const heartEmojis = ['💕', '💖', '💗', '💓', '💝', '❤️', '🧡', '💛'];
@@ -297,9 +380,9 @@
                 btnNo.style.top = newY + 'px';
                 
                 // Change text sometimes
-                const noTexts = ['No 💔', 'Really? 😢', 'Think again! 🤔', 'Are you sure? 😰', 'Nooo! 😭', 'Please? 🥺', 'Don\'t do it! 😱'];
+                const noTexts = translations[currentLang].noTexts;
                 if (Math.random() > 0.7) {
-                    btnNo.textContent = noTexts[Math.floor(Math.random() * noTexts.length)];
+                    document.getElementById('btnNoText').textContent = noTexts[Math.floor(Math.random() * noTexts.length)];
                 }
                 
                 // Make Yes button bigger
@@ -353,6 +436,9 @@
                 }, i * 30);
             }
         }
+
+        // Initialize on page load
+        window.addEventListener('DOMContentLoaded', initLanguage);
     </script>
 
 </body>
